@@ -1,0 +1,168 @@
+/* Variables */
+$red: #bf0000;
+$turquoise: #11d8de;
+$white: #fff;
+$black: #000;
+$spaceBlue: #426082;
+$gray: #ccc;
+$darkGray: #669;
+$darkerGray: #36383F;
+$green: #8ce029;
+$yellow: #f7f751;
+$pink: #d60fae;
+$navyBlue: #02065a;
+$orange: #d45704;
+$dot-colors: (
+  1: $red,
+  2: $turquoise,
+  3: $darkGray,
+  4: $black,
+  5: $spaceBlue,
+  6: $green,
+  7: $yellow,
+  8: $pink,
+  9: $navyBlue,
+  10: $orange
+);
+
+/* Mixins */
+@mixin dot-color($colornum) {
+  background-image: radial-gradient(circle at 20%, $white, map-get($dot-colors, $colornum) 75%);
+}
+
+/* Keyframes */
+@keyframes pulse {
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+/* Containers */
+body {
+  margin: 0;
+}
+
+#mainContainer {
+  font-family: 'PT Sans Narrow', 'Arial', sans-serif;
+}
+
+#gameContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(ellipse at bottom, $spaceBlue 0%, $black 100%);
+  box-shadow: 0 5px 5px $black inset;
+  overflow: hidden;
+}
+
+/* Header Display */
+.flex-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-settings {
+  background: $darkerGray;
+  margin: 0;
+  padding: 10px;
+}
+
+#points {
+  font-size: 40px;
+  font-weight: bold;
+  margin-left: 2px;
+  width: 150px;
+  color: $white;
+}
+
+#speedSlider {
+  width: 100%;
+  -webkit-appearance: none;
+  height: 12px;
+  margin-top: 10px;
+  border-radius: 50px;
+  border: 1px solid $black;
+  background: linear-gradient(to bottom, #f2f6f8 0%,#d8e1e7 50%,#b5c6d0 51%,#e0eff9 100%);
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: 1px solid $black;
+    background: radial-gradient(circle at 20%, $white, $darkGray 75%);
+  }
+}
+
+#speedDisplay {
+  margin-left: 2px;
+  margin-top: 10px;
+  color: $white;
+  font-weight: bold;
+  font-size: 14px;
+
+  span {
+    padding-left: 5px;
+    color: $gray;
+  }
+}
+
+#startButton {
+  font-size: 14px;
+  color: $white;
+  letter-spacing: 0.025em;
+  background: $black;
+  cursor: pointer;
+  border: 3px solid $gray;
+  border-radius: 20px;
+  width: 120px;
+  height: 40px;
+  overflow: hidden;
+  position: absolute;
+  right: 10px;
+
+  &:hover {
+    opacity: 0.75;
+    border-color: $white;
+  }
+}
+
+/* Dot */
+.dot {
+  &-container {
+    position: absolute;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px $black;
+
+    &:hover {
+      border: 2px solid $darkGray;
+    }
+  }
+
+  &-body {
+    min-width: 10px;
+    min-height: 10px;
+    border-radius: 50%;
+    opacity: 0.75;
+	  animation-name: spin; 
+	  animation-duration: 3s;
+  	animation-iteration-count: infinite; 
+    animation-timing-function: linear;
+
+    @for $i from 1 through 10 {
+      &.color-#{$i} {
+        @include dot-color($i);
+      }
+    }
+
+    &.pop {
+      animation: pulse 0.3s linear 1;
+    }
+  }
+}
